@@ -8,7 +8,7 @@ void loop() {
   startTime = micros();
   while (1) {
     if (Serial.available()>4) {
-      if (Serial.read()!=23) {
+      if (Serial.read()!=65) {
         throttle = rudder =aileron = elevator = 0;
       } else {
       throttle=Serial.read();
