@@ -21,7 +21,7 @@ bool A7105::initialize(void)
   uint8_t VCO_calibration_2 = 0;
   bool success = 0;
   
-  reset();                     //Reset the A7105
+  reset();  //Reset the A7105
 
   //Set A7105 configuration registers
   write((long)0x55201041); //Set ID Code Register (x06) to "55 20 10 41".
@@ -51,9 +51,10 @@ bool A7105::initialize(void)
   }
   IF_calibration_1 = read(IFCalib1); //Bit 4 is calibration failed bit
   if(IF_calibration_1 & IFCalib1_FBCF)
+  {
     //IF calibration failed. Exit immediately
     return  1;
-  
+  }
   /****************************Calibrate VCO - PLL = 0**********************************/  
   //Set PLL1 Channel
   write(PLL1, 0x00);
@@ -67,10 +68,12 @@ bool A7105::initialize(void)
       break;
   }
   VCO_calibration_1 = read(VCOSBCalib1); //Bit 4 is calibration failed bit
+  if(VCO_calibration_1 & VCOSBCalib1_VBCF)
+  {
+    //IF calibration failed. Exit immediately
+    return  1;
+  } 
   
-  //Set PLL1 Channel
-  write(PLL1, 0x78);
-
   /****************************Calibrate VCO - PLL = 0x78**********************************/  
   //Set PLL1 Channel
   write(PLL1, 0x78);
@@ -84,7 +87,11 @@ bool A7105::initialize(void)
       break;
   }
   VCO_calibration_2 = read(VCOSBCalib1); //Bit 4 is calibration failed bit
-  
+  if(VCO_calibration_2 & VCOSBCalib1_VBCF)
+  {
+    //IF calibration failed. Exit immediately
+    return  1;
+  }   
   
   //Set VCO Single Band Manual Calibration Settings
   write(VCOSBCalib1, 0x0B);

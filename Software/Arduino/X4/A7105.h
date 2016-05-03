@@ -76,8 +76,9 @@ class A7105
     
     enum Register_Masks {
         IFCalib1_FBCF = 1 << 4,
-        A7105_MASK_VBCF = 1 << 3,
+        VCOSBCalib1_VBCF = 1 << 3,
     };
+    
     enum TXPower {
         TX100uW = 0,
         TX300uW = 1,
