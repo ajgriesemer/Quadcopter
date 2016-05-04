@@ -3,19 +3,20 @@
 #include "Hubsan.h"
 
 A7105 a7105;
-const u8 allowed_ch[] = {0x14, 0x1e, 0x28, 0x32, 0x3c, 0x46, 0x50, 0x5a, 0x64, 0x6e, 0x78, 0x82};
-unsigned long sessionid;
+const u8 allowed_channels[] = {0x14, 0x1e, 0x28, 0x32, 0x3c, 0x46, 0x50, 0x5a, 0x64, 0x6e, 0x78, 0x82};
+const unsigned long session_id = 0x12345678;
+const unsigned long transmitter_id = 0xdb042679;
 
 enum BindStates
 {
-    BIND_1,
-    BIND_2,
-    BIND_3,
-    BIND_4,
-    BIND_5,
-    BIND_6,
-    BIND_7,
-    BIND_8
+    BIND_1 = 1,
+    BIND_2 = 2,
+    BIND_3 = 3,
+    BIND_4 = 4,
+    BIND_5 = 5,
+    BIND_6 = 6,
+    BIND_7 = 7,
+    BIND_8 = 8
 };
 
 //Initialize the A7105 RF module
@@ -23,20 +24,33 @@ void Hubsan::initialize(void)
 {
   a7105.enableSPI();
   a7105.initialize();
-  sessionid = rand();
-  channel = allowed_ch[rand() % sizeof(allowed_ch)];
+  channel = allowed_channels[rand() % sizeof(allowed_channels)];
 }
 
 void Hubsan::bind(void)
 {
+  int i;
   u8 binding_packet[16];
   switch(state)
   {
-    case
+    case BIND_1:
+      buildBindPacket(binding_packet, state);
+      a7105.write(Standby);
+      a7105.write(binding_packet, 16, channel);
+      delayMicroseconds(3000);
+      for(i = 0; i < 20; i++)
+      {
+        if(!(a7105.read(Mode) & 0x01)) //TX bit in Mode register
+          break;
+      }
+      if(i == 20)
+        //Write failed
+        return 1; 
+      a7105.strobe(RX);
   }
 }
 
-void Hubsan::buildBindPacket(u8 * packet, unsigned long transmitter_id, unsigned long session_id)
+void Hubsan::buildBindPacket(u8 * packet, u8 state)
 {
     packet[0] = state;
     packet[1] = channel;

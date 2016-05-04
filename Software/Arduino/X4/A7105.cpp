@@ -103,6 +103,23 @@ bool A7105::initialize(void)
   return 0;
 }
 
+void A7105::write(uint8_t *  buffer, uint8_t len, uint8_t channel)
+{
+  digitalWrite(kCS_Pin, LOW);
+  SPI.transfer(RST_WRPTR);
+  SPI.transfer(FifoData);
+  for( int i = 0; i < len; i++)
+  {
+    SPI.transfer(buffer[i]);
+  }
+  digitalWrite(kCS_Pin, HIGH);
+  
+  write(PLL1, channel); //set the channel
+  
+  write(TX); //strobe command to send the data
+  
+}
+
 void A7105::write(enum Registers address, uint8_t data)
 {
   digitalWrite(kCS_Pin, LOW);

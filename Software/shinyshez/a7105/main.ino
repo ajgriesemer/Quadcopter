@@ -1,34 +1,34 @@
+int startTime, waitTime, hubsanWait,finishTime;
+
+long time1 = 5000;
+long time2 = 6000;
+long time3 = 10000;
+long time4 = 15000;
+long time5 = 18000;
 void loop() {
   Serial.begin(115200);
   A7105_Setup(); //A7105_Reset();
-  int startTime, waitTime, hubsanWait,finishTime;
   //Serial.println("Preinit");
   initialize();
 
-  startTime = micros();
+  startTime = millis();
   while (1) {
-    if (Serial.available()>4) {
-      if (Serial.read()!=65) {
-        throttle = rudder =aileron = elevator = 0;
-      } else {
-      throttle=Serial.read();
-      rudder=Serial.read();
-      aileron=Serial.read();
-      elevator=Serial.read();
-      }
-    }
-    
-      //if (state!=0 && state!=1 & state!=128) 
-//Serial.print("State: ");
-//Serial.println(state);
     hubsanWait = hubsan_cb();
-//    finishTime=micros();
-//    waitTime = hubsanWait - (micros() - startTime);
-//    Serial.print("hubsanWait: " ); Serial.println(hubsanWait);
-//    Serial.print("waitTime: " ); Serial.println(waitTime);
-    //Serial.println(hubsanWait);
     delayMicroseconds(hubsanWait);
-    startTime = micros();
+    pointToPoint(time1, time2, 200, 220, 128, 150);
+    pointToPoint(time2, time3, 250, 220, 128, 150);
+    pointToPoint(time3, time4, 40, 150, 128, 150);
+    pointToPoint(time4, time5, 0, 150, 128, 150);
   }
 }
 
+void pointToPoint(long start_millis, long end_millis, char throttle_val, char roll_val, char pitch_val, char yaw_val)
+{
+  if(((millis()- startTime)> start_millis) && (((millis()- startTime)< end_millis)))
+  {
+    throttle = throttle_val;
+    rudder = roll_val;
+    elevator = pitch_val;
+    aileron = yaw_val;
+  }
+}
