@@ -11,4 +11,7 @@ An exhaustive analysis of the Hubsan controller hardware and the SPI communicati
 3. **[Easy Android Controllable Drone](http://www.instructables.com/id/Easy-Android-controllable-PC-Interfaceable-Relati/)** by ShinyShez - 
 A port of the DeviationTX code to Arduino to allow control of the quadcopter from a Processing app on an Android tablet.
 4. **[Copter Manager](https://github.com/andihit/coptermanager-arduino)** by Andihit - 
-An extra layer above the ShinyShez code. This project is designed to provide control of multiple quadcopters from a web based control panel.
+An extra layer above the ShinyShez code. This project is designed to provide control of multiple quadcopters from a web based control panel. Also reads telemetry data.
+
+5. **[Tx Adapter](https://github.com/gke/TxAdapter_gke/)** by gke - 
+Another project built on the work from PhracturedBlue with some code improvements. Also looks into the telemetry data.
