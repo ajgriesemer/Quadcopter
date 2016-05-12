@@ -41,6 +41,7 @@ struct PIXY_coordinate {
 	float yaw;
 };
 
+int pid_setup();
 int cmd_vehicle(HubsanSession *hubsanSession, PIXY_coordinate copter, vector dest);
 void vec_diff(vector v1, vector v2, vector *v3);
 void vec_update(vector *v);

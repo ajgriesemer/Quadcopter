@@ -6,6 +6,29 @@ vector unit_x 		= {1.,0.,1.,0.,1.};
 vector unit_y 		= {0.,1.,0.,1.,1.};
 
 PID_Manager yaw_pid, roll_pid, pitch_pid;
+float global_timeout = 0.020; //seconds
+
+int pid_setup() {
+	//setup yaw pid
+	yaw_pid.timeout 	= global_timeout;
+	yaw_pid.k_p			= 10.;
+	yaw_pid.k_i			= 0.;
+	yaw_pid.k_d			= 0.;
+	
+	//setup roll pid
+	roll_pid.timeout 	= global_timeout;
+	roll_pid.k_p		= 10.;
+	roll_pid.k_i		= 0.;
+	roll_pid.k_d		= 0.;
+	
+	//setup pitch pid
+	pitch_pid.timeout 	= global_timeout;
+	pitch_pid.k_p		= 10.;
+	pitch_pid.k_i		= 0.;
+	pitch_pid.k_d		= 0.;
+	
+	return 0;
+}
 
 int cmd_vehicle(HubsanSession *hubsanSession, PIXY_coordinate copter, vector dest) {
 	bool pid_success = true;
