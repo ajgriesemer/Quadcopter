@@ -17,9 +17,9 @@ void setup()
 
 int hex2int(byte *arr, int startpos, int endpos)
 {
-    int base = 1;
+    int base = 16;
     int ret = 0;
-    for(int i = endpos; i >= startpos; i--) {
+    for(int i = startpos; i <= endpos; i++) {
         int val = 0;
         if (arr[i] >= 'A' && arr[i] <= 'F')
            val = 10 + (arr[i] - 'A');
@@ -27,9 +27,8 @@ int hex2int(byte *arr, int startpos, int endpos)
            val = 10 + (arr[i] - 'a');
         else if (arr[i] >= '0' && arr[i] <= '9')
            val = arr[i] - '0';
-           
-        ret += val * base;
-        base *= 16;
+        ret *= base;
+        ret += val;
     }
     return ret;
 }
